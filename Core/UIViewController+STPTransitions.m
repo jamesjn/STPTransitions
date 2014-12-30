@@ -117,7 +117,13 @@
     STPTransitionCenter *center = (STPTransitionCenter *)self.transitioningDelegate;
     [center setNextPushOrPresentTransition:transition fromViewController:self];
     viewControllerToPresent.sourceViewController = self;
-    viewControllerToPresent.modalPresentationStyle = UIModalPresentationCustom;
+
+    if (self.hasOperatingSystemOfAtLeastIOS8) {
+        viewControllerToPresent.modalPresentationStyle = UIModalPresentationFullScreen;
+    } else {
+        viewControllerToPresent.modalPresentationStyle = UIModalPresentationCustom;
+    }
+
     viewControllerToPresent.transitioningDelegate = center;
     transition.needsRotationFixForModals = YES;
     transition.reverseTransition.needsRotationFixForModals = YES;
@@ -188,6 +194,18 @@
         self.view.frame = self.view.superview.bounds;
         self.view.transform = CGAffineTransformIdentity;
     }
+}
+
+#pragma mark - Internal Methods
+
+- (BOOL)hasOperatingSystemOfAtLeastIOS8 {
+    BOOL result = NO;
+    NSString *iOS8SystemVersionNumber = @"8.0";
+    NSString *currentSystemVersionNumber = [[UIDevice currentDevice] systemVersion];
+    if ([currentSystemVersionNumber compare:iOS8SystemVersionNumber options:NSNumericSearch] != NSOrderedAscending) {
+        result = YES;
+    }
+    return result;
 }
 
 @end

@@ -122,11 +122,11 @@
         viewControllerToPresent.modalPresentationStyle = UIModalPresentationFullScreen;
     } else {
         viewControllerToPresent.modalPresentationStyle = UIModalPresentationCustom;
+        transition.needsRotationFixForModals = YES;
+        transition.reverseTransition.needsRotationFixForModals = YES;
     }
 
     viewControllerToPresent.transitioningDelegate = center;
-    transition.needsRotationFixForModals = YES;
-    transition.reverseTransition.needsRotationFixForModals = YES;
     [self presentViewController:viewControllerToPresent animated:YES completion:completion];
 }
 
